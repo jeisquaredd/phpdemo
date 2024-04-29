@@ -12,6 +12,25 @@ class database{
         return $con->query($query)->fetch();
     }
 
+    function signup($username, $password)
+{
+    $con = $this->opencon();
+    
+    // Check if the username already exists
+    $query = $con->prepare("SELECT username FROM login WHERE username = ?");
+    $query->execute([$username]);
+    $existingUser = $query->fetch();
+
+    // If the username already exists, return false
+    if ($existingUser) {
+        return false;
+    }
+    
+    // Insert the new username and password into the database
+    return $con->prepare("INSERT INTO login (username, password) VALUES (?, ?)")
+                ->execute([$username, $password]);
+}
+
     function signupUser($username, $password)
     {
         $con = $this->opencon();

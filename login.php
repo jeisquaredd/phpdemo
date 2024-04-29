@@ -61,7 +61,18 @@ if (isset($_POST['login'])) {
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         <?php endif; ?>
-    <input type="submit" class="btn btn-primary btn-block" value="Log In" name="login">
+
+                        <div class="container">
+                          <div class="row gx-1">
+                            <div class="col">
+                            <input type="submit" class="btn btn-primary btn-block" value="Log In" name="login">
+                            </div>
+                            <div class="col">
+                            <a type="submit" class="btn btn-danger btn-block" href="signup.php">Sign Up</a>
+                            </div>
+                          </div>
+                        </div>
+   
    
   </form>
 </div>
