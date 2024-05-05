@@ -27,3 +27,47 @@
     text-align: center;
     color: #333; /* Adjust the color as per your design */
   }
+
+  .form-section {
+    display: none;
+  }
+  .current-section {
+    display: block;
+    max-width: 400px;
+    margin: 0 auto;
+    margin-top: 100px;
+    height: auto;
+    padding: 20px;  
+    
+  }
+.custom-container{
+  margin-top: 100px;
+  width: 500px;
+  
+}
+
+/* /user information stylesheet */
+
+.user-info {
+  margin: 0 auto;
+  margin-top: 100px;
+  height: auto;
+  padding: 20px; 
+
+}
+.list-group-item-icon {
+  margin-right: 10px;
+}
+.list-group-item-success {
+  background-color: #d4edda !important;
+}
+.list-group-item-danger {
+  background-color: #f8d7da !important;
+}
+
+.custom-container{
+  width: 800px;
+}
+body{
+font-family: 'Roboto', sans-serif;
+}

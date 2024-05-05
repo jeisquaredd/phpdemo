@@ -9,6 +9,7 @@ if (isset($_POST['adduser'])) {
     $confirm = $_POST['c_pass'];
     $city = $_POST['city'];
     $province = $_POST['province'];
+ 
     
     if ($password == $confirm) {
         // Passwords match, proceed with signup
@@ -76,6 +77,7 @@ if (isset($_POST['adduser'])) {
       <label for="password">Confirm Password:</label>
       <input type="password" class="form-control" name="c_pass" placeholder="Enter password">
     </div>
+    
     <input type="submit" class="btn btn-primary btn-block" value="Log In" name="adduser">
    
   </form>

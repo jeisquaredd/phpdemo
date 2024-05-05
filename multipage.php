@@ -10,8 +10,8 @@ if (isset($_POST['signup'])) {
     $confirm = $_POST['confirm'];
    
     if ($password == $confirm) {
-      // $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        if ($con->signup($username, $password)) {
+      $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        if ($con->signup($username, $hashedPassword)) {
             header('location:login.php');
         } else {
             $error_message = "Username already exists. Please choose a different username.";
@@ -34,17 +34,18 @@ if (isset($_POST['signup'])) {
 </head>
 <body>
 
-<div class="container-fluid login-container rounded shadow">
-  <h2 class="text-center login-heading mb-2">Register Now</h2>
-  
-  <form method="post">
-  <div class="form-group">
+
+<div id="personalInfoSection" class="container-fluid login-container rounded shadow">
+  <h2 class="text-center login-heading my-2"><span class="bg-primary rounded text-light p-2 mt-3">Multi-step Form Registration</span></h2>
+    <h5 class="mt-4">Step 1: Personal Information</h5>
+    <form id="personalInfoForm" action="post">
+    <div class="form-group">
       <label for="username">First Name:</label>
-      <input type="text" class="form-control  <?php if (!empty($error_message)) echo 'error-input'; ?>" name="First Name" placeholder="Enter username">
+      <input type="text" class="form-control" name="firstname" placeholder="Enter first name" required>
     </div>
     <div class="form-group">
       <label for="username">Last Name:</label>
-      <input type="text" class="form-control  <?php if (!empty($error_message)) echo 'error-input'; ?>" name="Last Name" placeholder="Enter username">
+      <input type="text" class="form-control" name="lastname" placeholder="Enter last name" required>
     </div>
   <div class="mb-3">
       <label for="birthday" class="form-label">Birthday:</label>
@@ -60,7 +61,7 @@ if (isset($_POST['signup'])) {
     </div>
     <div class="form-group">
       <label for="username">Username:</label>
-      <input type="text" class="form-control  <?php if (!empty($error_message)) echo 'error-input'; ?>" name="username" placeholder="Enter username">
+      <input type="text" class="form-control" name="username" placeholder="Enter username">
     </div>
     <div class="form-group">
       <label for="password">Password:</label>
@@ -70,16 +71,9 @@ if (isset($_POST['signup'])) {
       <label for="password">Confirm Password:</label>
       <input type="password" class="form-control" name="confirm" placeholder="Enter password">
     </div>
-    <?php if (!empty($error_message)) : ?>
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <?php echo $error_message; ?>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        <?php endif; ?>
-    <input type="submit" class="btn btn-danger btn-block" value="Sign Up" name="signup">
-   
-  </form>
-</div>
+      <button class="btn btn-primary btn-block" onclick="nextSection('personalInfoSection', 'addressSection')">Next</button>
+    </form>
+  </div>
 
 <!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -88,7 +82,17 @@ if (isset($_POST['signup'])) {
 <script src="./bootstrap-5.3.3-dist/js/bootstrap.js"></script>
 <!-- Bootsrap JS na nagpapagana ng danger alert natin -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function nextSection(currentSectionId, nextSectionId) {
+    document.getElementById(currentSectionId).classList.remove('current-section');
+    document.getElementById(nextSectionId).classList.add('current-section');
+  }
 
+  function prevSection(currentSectionId, prevSectionId) {
+    document.getElementById(currentSectionId).classList.remove('current-section');
+    document.getElementById(prevSectionId).classList.add('current-section');
+  }
+</script>
 </body>
 </html>
 
