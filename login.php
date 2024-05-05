@@ -33,27 +33,24 @@ if (isset($_POST['login'])) {
   <link rel="stylesheet" href="./bootstrap-5.3.3-dist/css/bootstrap.css">
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="./includes/style.css">
   <style>
-    .login-container {
-      max-width: 400px;
-      margin: 0 auto;
-      margin-top: 100px;
-    }
+  
   </style>
 </head>
 <body>
 
-<div class="container-fluid login-container">
-  <h2 class="text-center mb-4">Login</h2>
+<div class="container-fluid login-container rounded shadow">
+  <h2 class="text-center login-heading mb-2">Login</h2>
   
   <form method="post">
     <div class="form-group">
-      <label for="username">Username:</label>
-      <input type="text" class="form-control" name="user" placeholder="Enter username">
+      <!-- <label for="username">Username:</label> -->
+      <input type="text" class="form-control <?php if (!empty($error)) echo 'error-input'; ?>" name="user" placeholder="Enter username">
     </div>
     <div class="form-group">
-      <label for="password">Password:</label>
-      <input type="password" class="form-control" name="pass" placeholder="Enter password">
+      <!-- <label for="password">Password:</label> -->
+      <input type="password" class="form-control <?php if (!empty($error)) echo 'error-input'; ?>" name="pass" placeholder="Enter password">
     </div>
     <?php if (!empty($error)) : ?>
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">

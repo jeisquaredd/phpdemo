@@ -8,7 +8,7 @@ if (isset($_POST['signup'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
     $confirm = $_POST['confirm'];
-    
+   
     if ($password == $confirm) {
         if ($con->signup($username, $password)) {
             header('location:login.php');
@@ -29,26 +29,37 @@ if (isset($_POST['signup'])) {
   <link rel="stylesheet" href="./bootstrap-5.3.3-dist/css/bootstrap.css">
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    .login-container {
-      max-width: 400px;
-      margin: 0 auto;
-      margin-top: 100px;
-    }
-    .error-input {
-            border: 1px solid red !important;
-        }
-  </style>
+<link rel="stylesheet" href="./includes/style.css">
 </head>
 <body>
 
-<div class="container-fluid login-container">
-  <h2 class="text-center mb-4">Register Now</h2>
+<div class="container-fluid login-container rounded shadow">
+  <h2 class="text-center login-heading mb-2">Register Now</h2>
   
   <form method="post">
+  <div class="form-group">
+      <label for="username">First Name:</label>
+      <input type="text" class="form-control  <?php if (!empty($error_message)) echo 'error-input'; ?>" name="First Name" placeholder="Enter username">
+    </div>
+    <div class="form-group">
+      <label for="username">Last Name:</label>
+      <input type="text" class="form-control  <?php if (!empty($error_message)) echo 'error-input'; ?>" name="Last Name" placeholder="Enter username">
+    </div>
+  <div class="mb-3">
+      <label for="birthday" class="form-label">Birthday:</label>
+      <input type="date" class="form-control" name="birthday">
+    </div>
+    <div class="mb-3">
+      <label for="sex" class="form-label">Sex:</label>
+      <select class="form-select" name="sex">
+        <option selected disabled>Select Sex</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+    </div>
     <div class="form-group">
       <label for="username">Username:</label>
-      <input type="text" class="form-control <?php if (!empty($error_message)) echo 'error-input'; ?>" name="username" placeholder="Enter username">
+      <input type="text" class="form-control  <?php if (!empty($error_message)) echo 'error-input'; ?>" name="username" placeholder="Enter username">
     </div>
     <div class="form-group">
       <label for="password">Password:</label>
@@ -58,9 +69,12 @@ if (isset($_POST['signup'])) {
       <label for="password">Confirm Password:</label>
       <input type="password" class="form-control" name="confirm" placeholder="Enter password">
     </div>
-    <?php if (!empty($error_message)): ?>
-            <div class="alert alert-danger"><?php echo $error_message; ?></div>
-        <?php endif; ?>
+    <?php if (!empty($error_message)) : ?>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <?php echo $error_message; ?>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php endif; ?>
     <input type="submit" class="btn btn-danger btn-block" value="Sign Up" name="signup">
    
   </form>
@@ -76,3 +90,5 @@ if (isset($_POST['signup'])) {
 
 </body>
 </html>
+
+

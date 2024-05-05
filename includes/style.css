@@ -1,0 +1,29 @@
+.login-container {
+    max-width: 400px;
+    margin: 0 auto;
+    margin-top: 100px;
+    height: auto;
+    padding: 20px;  
+  }
+
+  .error-input {
+    border: 1px solid red !important;
+}
+
+.form-label {
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+  }
+  
+  .form-control {
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+  }
+
+  .login-heading {
+    font-family: "Roboto", sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    color: #333; /* Adjust the color as per your design */
+  }
