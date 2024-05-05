@@ -2,7 +2,7 @@
 
 require_once('classes/database.php');
 $con = new database();
- 
+session_start();
 
 $error = ""; // Initialize error variable
 
