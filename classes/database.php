@@ -32,8 +32,18 @@ class database{
     function signupUser($firstname, $lastname, $birthday, $sex, $username, $password)
     {
         $con = $this->opencon();
-        $con->prepare("INSERT INTO users (user_firstname, user_lastname, user_birthday, user_sex, user_name, user_pass) VALUES (?,?,?,?,?,?)")->execute([$firstname, $lastname, $birthday, $sex, $username, $password]);
-        return $con->lastInsertId();
+
+        $query = $con->prepare("SELECT user_name FROM users WHERE user_name = ?");
+        $query->execute([$username]);
+        $existingUser = $query->fetch();
+
+        if ($existingUser){
+            return false;
+        }else{
+            $con->prepare("INSERT INTO users (user_firstname, user_lastname, user_birthday, user_sex, user_name, user_pass) VALUES (?,?,?,?,?,?)")->execute([$firstname, $lastname, $birthday, $sex, $username, $password]);
+            return $con->lastInsertId();
+        }
+        
     }
     function insertAddress($user_id, $street, $barangay, $city, $province)
     {
@@ -105,11 +115,5 @@ function updateUserAddress($user_id, $street, $barangay, $city, $province) {
         return false; // Update failed
     }
 }
-
-// create me a new method
-
-
-
-
 
 }

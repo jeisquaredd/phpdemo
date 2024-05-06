@@ -1,7 +1,11 @@
 <?php
+session_start();
+if (empty($_SESSION['username'])) {
+    header('location:login.php');
+}
 require_once('classes/database.php');
 $con = new database();
-
+$error = "";
 if (isset($_POST['multisave'])) {
   // Getting the personal information
   $firstname = $_POST['firstname'];
@@ -30,15 +34,15 @@ if (isset($_POST['multisave'])) {
                 
             } else {
                 // Address insertion failed, display error message
-               echo $error = "Error occurred while signing up. Please try again.";
+               $error = "Error occurred while signing up. Please try again.";
             }
         } else {
             // User insertion failed, display error message
-            echo $error = "Error occurred while signing up. Please try again.";
+           $error = "Username is already existing. Please try again.";
         }
     } else {
         // Passwords don't match, display error message
-       echo $error = "Passwords did not match. Please try again.";
+        $error = "Passwords did not match. Please try again.";
     }
 }else
 ?>
@@ -56,7 +60,7 @@ if (isset($_POST['multisave'])) {
 
 </head>
 <body>
-
+<?php include('includes/navbar.php'); ?>
 <div class="container custom-container rounded-3 shadow my-5 p-3 px-5">
   <h3 class="text-center mt-4"> Registration Form</h3>
   <form method="post">
@@ -67,21 +71,21 @@ if (isset($_POST['multisave'])) {
         <div class="form-row">
           <div class="form-group col-md-6 col-sm-12">
             <label for="firstName">First Name:</label>
-            <input type="text" class="form-control" name="firstname" placeholder="Enter first name">
+            <input type="text" class="form-control" name="firstname" placeholder="Enter first name" required>
           </div>
           <div class="form-group col-md-6 col-sm-12">
             <label for="lastName">Last Name:</label>
-            <input type="text" class="form-control" name="lastname" placeholder="Enter last name">
+            <input type="text" class="form-control" name="lastname" placeholder="Enter last name"required>
           </div>
         </div>
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="birthday">Birthday:</label>
-            <input type="date" class="form-control" name="birthday">
+            <input type="date" class="form-control" name="birthday"required>
           </div>
           <div class="form-group col-md-6">
             <label for="sex">Sex:</label>
-            <select class="form-control" name="sex">
+            <select class="form-control" name="sex"required>
               <option selected>Select Sex</option>
               <option>Male</option>
               <option>Female</option>
@@ -90,15 +94,15 @@ if (isset($_POST['multisave'])) {
         </div>
         <div class="form-group">
           <label for="username">Username:</label>
-          <input type="text" class="form-control" name="username" placeholder="Enter username">
+          <input type="text" class="form-control" name="username" placeholder="Enter username"required>
         </div>
         <div class="form-group">
           <label for="password">Password:</label>
-          <input type="password" class="form-control" name="password" placeholder="Enter password">
+          <input type="password" class="form-control" name="password" placeholder="Enter password"required>
         </div>
         <div class="form-group">
           <label for="password">Confirm Password:</label>
-          <input type="password" class="form-control" name="xpassword" placeholder="Re-enter your password">
+          <input type="password" class="form-control" name="xpassword" placeholder="Re-enter your password"required>
         </div>
       </div>
     </div>
@@ -109,34 +113,39 @@ if (isset($_POST['multisave'])) {
       <div class="card-body">
         <div class="form-group">
           <label for="street">Street:</label>
-          <input type="text" class="form-control" name="street" placeholder="Enter street">
+          <input type="text" class="form-control" name="street" placeholder="Enter street"required>
         </div>
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="barangay">Barangay:</label>
-            <input type="text" class="form-control" name="barangay" placeholder="Enter barangay">
+            <input type="text" class="form-control" name="barangay" placeholder="Enter barangay"required>
           </div>
           <div class="form-group col-md-6">
             <label for="city">City:</label>
-            <input type="text" class="form-control" name="city" placeholder="Enter city">
+            <input type="text" class="form-control" name="city" placeholder="Enter city"required>
           </div>
         </div>
         <div class="form-group">
           <label for="province">Province:</label>
-          <input type="text" class="form-control" name="province" placeholder="Enter province">
+          <input type="text" class="form-control" name="province" placeholder="Enter province"required>
         </div>
       </div>
     </div>
     
     <!-- Submit Button -->
-    
+    <?php if (!empty($error)) : ?>
+                            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+                                <?php echo $error; ?>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php endif; ?>
     <div class="container">
     <div class="row justify-content-center gx-0">
         <div class="col-lg-3 col-md-4"> 
             <input type="submit" name="multisave" class="btn btn-outline-primary btn-block mt-4" value="Sign Up">
         </div>
         <div class="col-lg-3 col-md-4"> 
-            <a class="btn btn-outline-danger btn-block mt-4" href="login.php">Go Back</a>
+            <a class="btn btn-outline-danger btn-block mt-4" href="index.php">Go Back</a>
         </div>
     </div>
 </div>
