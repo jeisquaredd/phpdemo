@@ -57,7 +57,8 @@ if (isset($_POST['multisave'])) {
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="./includes/style.php">
-
+  <!-- JQuery for Address Selector -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 <?php include('includes/navbar.php'); ?>
@@ -129,8 +130,16 @@ if (isset($_POST['multisave'])) {
           <label for="province">Province:</label>
           <input type="text" class="form-control" name="province" placeholder="Enter province"required>
         </div>
+
+        <h2>Address Selector</h2>
+        <div class="form-group">
+        <label class="form-label">Region *</label>
+            <select name="region" class="form-control form-control-md" id="region"></select>
+            <input type="hidden" class="form-control form-control-md" name="region_text" id="region-text" required>
+        </div>
       </div>
     </div>
+
     
     <!-- Submit Button -->
     <?php if (!empty($error)) : ?>
@@ -161,5 +170,7 @@ if (isset($_POST['multisave'])) {
 <script src="./bootstrap-5.3.3-dist/js/bootstrap.js"></script>
 <!-- Bootsrap JS na nagpapagana ng danger alert natin -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- For Address Selector -->
+<script src="./includes/ph-address-selector.js"></script>
 </body>
 </html>
