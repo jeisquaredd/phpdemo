@@ -95,11 +95,14 @@ function viewdata($id){
 function updateUser($user_id, $firstname, $lastname, $birthday,$sex, $username, $password) {
     try {
         $con = $this->opencon();
+        $con->beginTransaction();
         $query = $con->prepare("UPDATE users SET user_firstname=?, user_lastname=?,user_birthday=?, user_sex=?,user_name=?, user_pass=? WHERE user_id=?");
-        return $query->execute([$firstname, $lastname,$birthday,$sex,$username, $password, $user_id]);
+        $query->execute([$firstname, $lastname,$birthday,$sex,$username, $password, $user_id]);
         // Update successful
+        $con->commit();
     } catch (PDOException $e) {
         // Handle the exception (e.g., log error, return false, etc.)
+         $con->rollBack();
         return false; // Update failed
     }
 }
@@ -107,13 +110,23 @@ function updateUser($user_id, $firstname, $lastname, $birthday,$sex, $username, 
 function updateUserAddress($user_id, $street, $barangay, $city, $province) {
     try {
         $con = $this->opencon();
+        $con->beginTransaction();
         $query = $con->prepare("UPDATE user_address SET street=?, barangay=?, city=?, province=? WHERE user_id=?");
         $query->execute([$street, $barangay, $city, $province, $user_id]);
+        $con->commit();
         return true; // Update successful
     } catch (PDOException $e) {
         // Handle the exception (e.g., log error, return false, etc.)
+        $con->rollBack();
         return false; // Update failed
     }
+}
+
+function getusercount()
+{
+    $con = $this->opencon();
+    return $con->query("SELECT SUM(CASE WHEN user_sex = 'Male' THEN 1 ELSE 0 END) AS male_count,
+    SUM(CASE WHEN user_sex = 'Female' THEN 1 ELSE 0 END) AS female_count FROM users;")->fetch();
 }
 
 }
