@@ -2,14 +2,13 @@
 require_once('classes/database.php');
 $con = new database();
 
-if (empty($id = $_POST['id'])) {
+if (empty($_POST['id'])) {
      header('location:index.php');
     }else{
         $id = $_POST['id'];
         $data = $con->viewdata($id);
-        $userBirthday = '2023-02-02';
-        $userSex = 'Male';
     }
+    
 
     if(isset($_POST['update'])) {
         //user information 
