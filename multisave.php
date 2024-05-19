@@ -6,45 +6,65 @@ if (empty($_SESSION['username'])) {
 require_once('classes/database.php');
 $con = new database();
 $error = "";
+
 if (isset($_POST['multisave'])) {
-  // Getting the personal information
   $firstname = $_POST['firstname'];
   $lastname = $_POST['lastname'];
   $birthday = $_POST['birthday'];
   $sex = $_POST['sex'];
+  $email = $_POST['email'];
   $username = $_POST['username'];
-  $password = $_POST['password'];
-  $confirm = $_POST['xpassword'];
+  $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
-  // Getting the address information
-    $street = $_POST['street'];
-    $barangay = $_POST['barangay'];
-    $city = $_POST['city'];
-    $province = $_POST['province'];
- 
-    
-    if ($password == $confirm) {
-        // Passwords match, proceed with signup
-        $user_id = $con->signupUser($firstname, $lastname, $birthday, $sex, $username, $password); // Insert into users table and get user_id
-        if ($user_id) {
-            // Signup successful, insert address into users_address table
-            if ($con->insertAddress($user_id, $street, $barangay, $city, $province)) {
-                // Address insertion successful, redirect to login page
-              header('location:login.php');
-                
-            } else {
-                // Address insertion failed, display error message
-               $error = "Error occurred while signing up. Please try again.";
-            }
-        } else {
-            // User insertion failed, display error message
-           $error = "Username is already existing. Please try again.";
-        }
-    } else {
-        // Passwords don't match, display error message
-        $error = "Passwords did not match. Please try again.";
-    }
-}else
+  // Handle file upload
+  $target_dir = "uploads/";
+  $original_file_name = basename($_FILES["profile_picture"]["name"]);
+  $target_file = $target_dir . $original_file_name;
+  $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+  $uploadOk = 1;
+
+  // Check if file already exists and rename if necessary
+  if (file_exists($target_file)) {
+      // Generate a unique file name by appending a timestamp
+      $new_file_name = pathinfo($original_file_name, PATHINFO_FILENAME) . '_' . time() . '.' . $imageFileType;
+      $target_file = $target_dir . $new_file_name;
+  }
+
+  // Check if file is an actual image or fake image
+  $check = getimagesize($_FILES["profile_picture"]["tmp_name"]);
+  if ($check === false) {
+      echo "File is not an image.";
+      $uploadOk = 0;
+  }
+
+  // Check file size
+  if ($_FILES["profile_picture"]["size"] > 500000) {
+      echo "Sorry, your file is too large.";
+      $uploadOk = 0;
+  }
+
+  // Allow certain file formats
+  if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
+      echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+      $uploadOk = 0;
+  }
+
+  // Check if $uploadOk is set to 0 by an error
+  if ($uploadOk == 0) {
+      echo "Sorry, your file was not uploaded.";
+  } else {
+      if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $target_file)) {
+          echo "The file " . htmlspecialchars($new_file_name) . " has been uploaded.";
+
+          // Save the user data and the path to the profile picture in the database
+          $profile_picture_path = $new_file_name; // Save the new file name (without directory)
+          
+          $userID = $con->signupUser($firstname, $lastname, $birthday, $sex, $email, $username, $password, $profile_picture_path);
+      } else {
+          echo "Sorry, there was an error uploading your file.";
+      }
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -129,13 +149,6 @@ if (isset($_POST['multisave'])) {
         <div class="form-group">
           <label for="province">Province:</label>
           <input type="text" class="form-control" name="province" placeholder="Enter province"required>
-        </div>
-
-        <h2>Address Selector</h2>
-        <div class="form-group">
-        <label class="form-label">Region *</label>
-            <select name="region" class="form-control form-control-md" id="region"></select>
-            <input type="hidden" class="form-control form-control-md" name="region_text" id="region-text" required>
         </div>
       </div>
     </div>

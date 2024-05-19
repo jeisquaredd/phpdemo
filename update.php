@@ -2,9 +2,10 @@
 require_once('classes/database.php');
 $con = new database();
 
-if (empty($_POST['id'])) {
+if (empty($id = $_POST['id'])) {
      header('location:index.php');
     }else{
+      echo $id;
         $id = $_POST['id'];
         $data = $con->viewdata($id);
     }

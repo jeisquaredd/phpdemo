@@ -7,18 +7,15 @@ session_start();
 $error = ""; // Initialize error variable
 
 if (isset($_POST['login'])) {
-    $username = $_POST['user'];
-    $password = $_POST['pass'];
-    $result = $con->check($username, $password);
-    if ($result) {
-        if ($result['user_name'] == $_POST['user'] && $result['user_pass'] == $_POST['pass']) {
-            $_SESSION['username'] = $result['user_name'];
-            header('location:index.php');
-        } else {
-          $error = "Incorrect username or password. Please try again.";
-      }
+  $username = $_POST['user'];
+  $password = $_POST['pass'];
+  $result = $con->check($username, $password);
+
+  if ($result) {
+      $_SESSION['username'] = $result['user_name'];
+      header('location:index.php');
   } else {
-      $error = "Error occurred while logging in. Please try again.";
+      $error = "Incorrect username or password. Please try again.";
   }
 }
 

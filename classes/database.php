@@ -9,42 +9,56 @@ class database{
         return new PDO('mysql:host=localhost; dbname=student', 'root', '');
     }
 
-    function check($username, $password){
-        $con = $this->opencon();
-        $query = "Select * from users WHERE user_name='".$username."'&&user_pass='".$password."'";
-        return $con->query($query)->fetch();
-    }
+    // function check($username, $password){
+    //     $con = $this->opencon();
+    //     $query = "Select * from users WHERE user_name='".$username."'&&user_pass='".$password."'";
+    //     return $con->query($query)->fetch();
+    // }
 
-    function signup($username, $password){
-    $con = $this->opencon();
-    // Check if the username already exists
-    $query = $con->prepare("SELECT user_name FROM users WHERE user_name = ?");
-    $query->execute([$username]);
-    $existingUser = $query->fetch();
-    // If the username already exists, return false
-    if ($existingUser) {
+    function check($username, $password) {
+        // Open database connection
+        $con = $this->opencon();
+    
+        // Prepare the SQL query
+        $stmt = $con->prepare("SELECT * FROM users WHERE user_name = ?");
+        $stmt->execute([$username]);
+    
+        // Fetch the user data as an associative array
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        // If a user is found, verify the password
+        if ($user && password_verify($password, $user['user_pass'])) {
+            return $user;
+        }
+    
+        // If no user is found or password is incorrect, return false
         return false;
     }
-    // Insert the new username and password into the database
-    return $con->prepare("INSERT INTO users (user_name, user_pass) VALUES (?, ?)")->execute([$username, $password]);
-    }
 
-    function signupUser($firstname, $lastname, $birthday, $sex, $username, $password)
+    // function signup($username, $password){
+    // $con = $this->opencon();
+    // // Check if the username already exists
+    // $query = $con->prepare("SELECT user_name FROM users WHERE user_name = ?");
+    // $query->execute([$username]);
+    // $existingUser = $query->fetch();
+    // // If the username already exists, return false
+    // if ($existingUser) {
+    //     return false;
+    // }
+    // // Insert the new username and password into the database
+    // return $con->prepare("INSERT INTO users (user_name, user_pass) VALUES (?, ?)")->execute([$username, $password]);
+    // }
+
+    function signupUser($firstname, $lastname, $birthday, $sex, $email, $username, $password, $profilePicture)
     {
         $con = $this->opencon();
-
-        $query = $con->prepare("SELECT user_name FROM users WHERE user_name = ?");
-        $query->execute([$username]);
-        $existingUser = $query->fetch();
-
-        if ($existingUser){
-            return false;
-        }else{
-            $con->prepare("INSERT INTO users (user_firstname, user_lastname, user_birthday, user_sex, user_name, user_pass) VALUES (?,?,?,?,?,?)")->execute([$firstname, $lastname, $birthday, $sex, $username, $password]);
-            return $con->lastInsertId();
+        // Save user data along with profile picture path to the database
+        $con->prepare("INSERT INTO users (user_firstname, user_lastname, user_birthday, user_sex, user_email, user_name, user_pass, user_profile_picture) VALUES (?,?,?,?,?,?,?,?)")->execute([$firstname, $lastname, $birthday, $sex, $email, $username, $password, $profilePicture]);
+        return $con->lastInsertId();
         }
-        
-    }
+    
+
+    
     function insertAddress($user_id, $street, $barangay, $city, $province)
     {
         $con = $this->opencon();
@@ -55,7 +69,7 @@ class database{
     function view()
         {
             $con = $this->opencon();
-            return $con->query("SELECT users.user_id, users.user_firstname, users.user_lastname, users.user_birthday, users.user_sex, users.user_name, CONCAT(user_address.city,', ', user_address.province) AS address from users INNER JOIN user_address ON users.user_id = user_address.user_id")->fetchAll();
+            return $con->query("SELECT users.user_id, users.user_firstname, users.user_lastname, users.user_birthday, users.user_sex, users.user_name, users.user_profile_picture, CONCAT(user_address.city,', ', user_address.province) AS address from users INNER JOIN user_address ON users.user_id = user_address.user_id")->fetchAll();
         }
     
     function delete($id)
