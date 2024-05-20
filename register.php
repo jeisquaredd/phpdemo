@@ -28,16 +28,25 @@ if (isset($_POST['multisave'])) {
     // Handle file upload
     $target_dir = "uploads/";
     $original_file_name = basename($_FILES["profile_picture"]["name"]);
-    $target_file = $target_dir . $original_file_name;
-    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-    $uploadOk = 1;
+    
+    // NEW CODE: Initialize $new_file_name with $original_file_name
+     $new_file_name = $original_file_name; 
+    
+    
+     $target_file = $target_dir . $original_file_name;
+     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+     $uploadOk = 1;
     
     // Check if file already exists and rename if necessary
-    if (file_exists($target_file)) {
-        // Generate a unique file name by appending a timestamp
-        $new_file_name = pathinfo($original_file_name, PATHINFO_FILENAME) . '_' . time() . '.' . $imageFileType;
-        $target_file = $target_dir . $new_file_name;
-    }
+  // Check if file already exists and rename if necessary
+  if (file_exists($target_file)) {
+    // Generate a unique file name by appending a timestamp
+    $new_file_name = pathinfo($original_file_name, PATHINFO_FILENAME) . '_' . time() . '.' . $imageFileType;
+    $target_file = $target_dir . $new_file_name;
+  } else {
+    // Update $target_file with the original file name
+    $target_file = $target_dir . $original_file_name;
+}
 
     // Check if file is an actual image or fake image
     $check = getimagesize($_FILES["profile_picture"]["tmp_name"]);
@@ -74,7 +83,7 @@ if (isset($_POST['multisave'])) {
                 // Signup successful, insert address into users_address table
                 if ($con->insertAddress($userID, $street, $barangay, $city, $province)) {
                     // Address insertion successful, redirect to login page
-                    header('location:login.php');
+                    header('location:index.php');
                     exit; // Stop further execution
                 } else {
                     // Address insertion failed, display error message
@@ -91,8 +100,6 @@ if (isset($_POST['multisave'])) {
     }
 }
 ?>
-
-
 
 <!doctype html>
 <html lang="en">
