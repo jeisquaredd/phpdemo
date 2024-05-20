@@ -1,11 +1,12 @@
 <?php
 require_once('classes/database.php');
 $con = new database();
+session_start();
 
 if (empty($id = $_POST['id'])) {
      header('location:index.php');
     }else{
-      echo $id;
+      
         $id = $_POST['id'];
         $data = $con->viewdata($id);
     }
@@ -28,7 +29,9 @@ if (empty($id = $_POST['id'])) {
         $province = $_POST['province'];
         $user_id = $_POST['id'];
 
-        if($password == $confirm) {
+        echo $user_id;
+
+        if(1 == 1) {
             if ($con->updateUser($user_id, $firstname, $lastname, $birthday,$sex, $username, $password)) {
             // Update user address
             if ($con->updateUserAddress($user_id, $street, $barangay, $city, $province)) {
@@ -63,7 +66,7 @@ if (empty($id = $_POST['id'])) {
 
 </head>
 <body>
-
+<?php include('includes/navbar.php'); ?>
 <div class="container custom-container rounded-3 shadow my-5 p-3 px-5">
   <h3 class="text-center mt-4"> Hello, <?php echo $data['user_firstname']?>!</h3>
   <form method="POST">

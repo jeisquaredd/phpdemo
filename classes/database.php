@@ -114,6 +114,7 @@ function updateUser($user_id, $firstname, $lastname, $birthday,$sex, $username, 
         $query->execute([$firstname, $lastname,$birthday,$sex,$username, $password, $user_id]);
         // Update successful
         $con->commit();
+        return true;
     } catch (PDOException $e) {
         // Handle the exception (e.g., log error, return false, etc.)
          $con->rollBack();

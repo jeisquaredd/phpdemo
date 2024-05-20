@@ -32,12 +32,11 @@ if (isset($_POST['multisave'])) {
     // NEW CODE: Initialize $new_file_name with $original_file_name
      $new_file_name = $original_file_name; 
     
-    
      $target_file = $target_dir . $original_file_name;
      $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
      $uploadOk = 1;
     
-    // Check if file already exists and rename if necessary
+  // Check if file already exists and rename if necessary
   // Check if file already exists and rename if necessary
   if (file_exists($target_file)) {
     // Generate a unique file name by appending a timestamp
@@ -123,6 +122,7 @@ if (isset($_POST['multisave'])) {
   </style>
 </head>
 <body>
+<?php include('includes/navbar.php'); ?>
 <div class="container custom-container rounded-3 shadow my-5 p-3 px-5">
   <h3 class="text-center mt-4">Registration Form</h3>
   <form id="registration-form" method="post" action="" enctype="multipart/form-data" novalidate>
@@ -387,7 +387,7 @@ function validateStep(step) {
   
       function validatePassword(passwordInput) {
         const password = passwordInput.value;
-        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/; mke explanation
         if (regex.test(password)) {
           passwordInput.classList.remove("is-invalid");
           passwordInput.classList.add("is-valid");
