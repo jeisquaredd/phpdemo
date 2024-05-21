@@ -8,6 +8,7 @@ if (empty($id = $_POST['id'])) {
     }else{
       
         $id = $_POST['id'];
+        echo $id;
         $data = $con->viewdata($id);
     }
     

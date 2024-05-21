@@ -3,6 +3,9 @@
 require_once('classes/database.php');
 $con = new database();
 session_start();
+if (isset($_SESSION['username'])) {
+  header('location:index.php');
+}
 
 $error = ""; // Initialize error variable
 
