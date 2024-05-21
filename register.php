@@ -1,8 +1,8 @@
 <?php
-session_start();
-if (empty($_SESSION['username'])) {
-    header('location:login.php');
-}
+// session_start();
+// if (empty($_SESSION['user'])) {
+//     header('location:login.php');
+// }
 require_once('classes/database.php');
 $con = new database();
 $error = "";
@@ -25,28 +25,28 @@ if (isset($_POST['multisave'])) {
     $city = $_POST['city_text'];
     $province = $_POST['region_text'];
 
-    // Handle file upload
-    $target_dir = "uploads/";
-    $original_file_name = basename($_FILES["profile_picture"]["name"]);
-    
-    // NEW CODE: Initialize $new_file_name with $original_file_name
-     $new_file_name = $original_file_name; 
-    
-     $target_file = $target_dir . $original_file_name;
-     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-     $uploadOk = 1;
-    
-  // Check if file already exists and rename if necessary
-  // Check if file already exists and rename if necessary
-  if (file_exists($target_file)) {
-    // Generate a unique file name by appending a timestamp
-    $new_file_name = pathinfo($original_file_name, PATHINFO_FILENAME) . '_' . time() . '.' . $imageFileType;
-    $target_file = $target_dir . $new_file_name;
-  } else {
-    // Update $target_file with the original file name
+   // Handle file upload
+   $target_dir = "uploads/";
+   $original_file_name = basename($_FILES["profile_picture"]["name"]);
+   
+   // NEW CODE: Initialize $new_file_name with $original_file_name
+    $new_file_name = $original_file_name; 
+   
+   
     $target_file = $target_dir . $original_file_name;
-}
-
+    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    $uploadOk = 1;
+   
+   // Check if file already exists and rename if necessary
+ // Check if file already exists and rename if necessary
+ if (file_exists($target_file)) {
+   // Generate a unique file name by appending a timestamp
+   $new_file_name = pathinfo($original_file_name, PATHINFO_FILENAME) . '_' . time() . '.' . $imageFileType;
+   $target_file = $target_dir . $new_file_name;
+ } else {
+   // Update $target_file with the original file name
+   $target_file = $target_dir . $original_file_name;
+}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
     // Check if file is an actual image or fake image
     $check = getimagesize($_FILES["profile_picture"]["tmp_name"]);
     if ($check === false) {
@@ -100,6 +100,8 @@ if (isset($_POST['multisave'])) {
 }
 ?>
 
+
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -122,7 +124,6 @@ if (isset($_POST['multisave'])) {
   </style>
 </head>
 <body>
-<?php include('includes/navbar.php'); ?>
 <div class="container custom-container rounded-3 shadow my-5 p-3 px-5">
   <h3 class="text-center mt-4">Registration Form</h3>
   <form id="registration-form" method="post" action="" enctype="multipart/form-data" novalidate>
@@ -387,7 +388,7 @@ function validateStep(step) {
   
       function validatePassword(passwordInput) {
         const password = passwordInput.value;
-        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/; mke explanation
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
         if (regex.test(password)) {
           passwordInput.classList.remove("is-invalid");
           passwordInput.classList.add("is-valid");
