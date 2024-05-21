@@ -48,7 +48,7 @@ try {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -107,7 +107,7 @@ try {
         $('#search').on('keyup', function() {
             var search = $(this).val();
             $.ajax({
-                url: 'fetch_users.php', // Change the URL to the correct path
+                url: 'live_search.php', 
                 method: 'POST',
                 data: {search: search},
                 success: function(response) {
