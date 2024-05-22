@@ -11,7 +11,6 @@
 </head>
 <body>
 
-
 <div class="container-fluid login-container rounded shadow">
   <h2 class="text-center login-heading my-2"><span class="bg-primary rounded text-light p-2 mt-3">Multi-step Form Registration</span></h2>
   <form method="post">

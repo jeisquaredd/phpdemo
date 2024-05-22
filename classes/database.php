@@ -20,11 +20,11 @@ class database{
         $con = $this->opencon();
     
         // Prepare the SQL query
-        $stmt = $con->prepare("SELECT * FROM users WHERE user_name = ?");
-        $stmt->execute([$username]);
+        $query = $con->prepare("SELECT * FROM users WHERE user_name = ?");
+        $query->execute([$username]);
     
         // Fetch the user data as an associative array
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        $user = $query->fetch(PDO::FETCH_ASSOC);
     
         // If a user is found, verify the password
         if ($user && password_verify($password, $user['user_pass'])) {

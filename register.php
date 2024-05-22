@@ -136,9 +136,10 @@ if (isset($_POST['multisave'])) {
         </div>
           <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" class="form-control" name="email" placeholder="Enter email" required>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
             <div class="valid-feedback">Looks good!</div>
             <div class="invalid-feedback">Please enter a valid email.</div>
+            <div id="emailFeedback" class="invalid-feedback"></div> <!-- New feedback div -->
           </div>
           <div class="form-group">
             <label for="password">Password:</label>
@@ -153,7 +154,7 @@ if (isset($_POST['multisave'])) {
             <div class="valid-feedback">Looks good!</div>
             <div class="invalid-feedback">Please confirm your password.</div>
           </div>
-          
+
         </div>
       </div>
       <button type="button" id="nextButton" class="btn btn-primary mt-3" onclick="nextStep()">Next</button>
@@ -209,7 +210,6 @@ if (isset($_POST['multisave'])) {
     </div>
     </div>
     </div>
-
 
     <!-- Step 3 -->
     <div class="form-step" id="step-3">
@@ -297,6 +297,40 @@ $(document).ready(function(){
 
 </script>
 
+<script>
+$(document).ready(function(){
+    $('#email').on('input', function(){
+        var email = $(this).val();
+        if(email.length > 0) {
+            $.ajax({
+                url: 'check_email.php',
+                method: 'POST',
+                data: {email: email},
+                dataType: 'json',
+                success: function(response) {
+                    if(response.exists) {
+                        $('#email').removeClass('is-valid').addClass('is-invalid');
+                        $('#emailFeedback').text('Email is already taken.');
+                        $('#nextButton').prop('disabled', true); // Disable the Next button
+                    } else {
+                        $('#email').removeClass('is-invalid').addClass('is-valid');
+                        $('#emailFeedback').text('');
+                        $('#nextButton').prop('disabled', false); // Enable the Next button
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error:', status, error);
+                }
+            });
+        } else {
+            $('#email').removeClass('is-valid is-invalid');
+            $('#emailFeedback').text('');
+            $('#nextButton').prop('disabled', false); // Enable the Next button if email is empty
+        }
+    });
+});
+</script>
+
 <!-- Script for Form Validation -->
 <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -304,7 +338,6 @@ $(document).ready(function(){
       const birthdayInput = document.getElementById("birthday");
       const steps = document.querySelectorAll(".form-step");
       let currentStep = 0;
-
 
   
       // Set the max attribute of the birthday input to today's date
@@ -419,7 +452,6 @@ function validateStep(step) {
         }
     });
 
-
       
     
 });</script>
@@ -427,3 +459,4 @@ function validateStep(step) {
   </body>
   </html>
   
+

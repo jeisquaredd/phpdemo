@@ -1,6 +1,7 @@
 <?php
 require_once('classes/database.php');
 session_start();
+
 // Initialize the database connection
 $con = new database();
 $html = ''; // Initialize empty variable for user table content
@@ -14,8 +15,23 @@ try {
         exit;
     }
 
-    // Initial fetching of users
-    $query = $connection->prepare("SELECT users.user_id, users.user_firstname, users.user_lastname, users.user_birthday, users.user_sex, users.user_name, users.user_profile_picture, CONCAT(user_address.city,', ', user_address.province) AS address FROM users INNER JOIN user_address ON users.user_id = user_address.user_id");
+    // Define the number of records per page
+    $recordsPerPage = 10;
+
+    // Get the current page number from the request, default to 1 if not set
+    $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $offset = ($currentPage - 1) * $recordsPerPage;
+
+    // Get the total number of records
+    $totalQuery = $connection->prepare("SELECT COUNT(*) AS total FROM users");
+    $totalQuery->execute();
+    $totalRecords = $totalQuery->fetch(PDO::FETCH_ASSOC)['total'];
+    $totalPages = ceil($totalRecords / $recordsPerPage);
+
+    // Fetch users for the current page
+    $query = $connection->prepare("SELECT users.user_id, users.user_firstname, users.user_lastname, users.user_birthday, users.user_sex, users.user_name, users.user_profile_picture, CONCAT(user_address.city, ', ', user_address.province) AS address FROM users INNER JOIN user_address ON users.user_id = user_address.user_id LIMIT :offset, :recordsPerPage");
+    $query->bindParam(':offset', $offset, PDO::PARAM_INT);
+    $query->bindParam(':recordsPerPage', $recordsPerPage, PDO::PARAM_INT);
     $query->execute();
     $users = $query->fetchAll(PDO::FETCH_ASSOC);
 
@@ -42,17 +58,34 @@ try {
         $html .= '</tr>';
     }
 
+    // Output the pagination HTML
+    $paginationHtml = '';
+    if ($totalPages > 1) {
+        $paginationHtml .= '<nav><ul class="pagination justify-content-center">';
+        if ($currentPage > 1) {
+            $paginationHtml .= '<li class="page-item"><a class="page-link" href="?page=' . ($currentPage - 1) . '">Previous</a></li>';
+        }
+        for ($i = 1; $i <= $totalPages; $i++) {
+            $active = $i == $currentPage ? ' active' : '';
+            $paginationHtml .= '<li class="page-item' . $active . '"><a class="page-link" href="?page=' . $i . '">' . $i . '</a></li>';
+        }
+        if ($currentPage < $totalPages) {
+            $paginationHtml .= '<li class="page-item"><a class="page-link" href="?page=' . ($currentPage + 1) . '">Next</a></li>';
+        }
+        $paginationHtml .= '</ul></nav>';
+    }
+
 } catch (PDOException $e) {
     echo json_encode(['error' => $e->getMessage()]);
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Live Search!</title>
+  <title>User Table with Pagination</title>
   <link rel="stylesheet" href="./bootstrap-5.3.3-dist/css/bootstrap.css">
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -89,6 +122,8 @@ try {
             </tbody>
         </table>
     </div>
+    <!-- Pagination links -->
+    <?php echo $paginationHtml; ?>
 </div>
 <!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -107,7 +142,7 @@ try {
         $('#search').on('keyup', function() {
             var search = $(this).val();
             $.ajax({
-                url: 'live_search.php', 
+                url: 'live_search.php',
                 method: 'POST',
                 data: {search: search},
                 success: function(response) {
