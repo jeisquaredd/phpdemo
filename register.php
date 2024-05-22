@@ -1,8 +1,8 @@
 <?php
-// session_start();
-// if (empty($_SESSION['user'])) {
-//     header('location:login.php');
-// }
+ session_start();
+ if (empty($_SESSION['username'])) {
+     header('location:login.php');
+ }
 require_once('classes/database.php');
 $con = new database();
 $error = "";
@@ -28,16 +28,12 @@ if (isset($_POST['multisave'])) {
    // Handle file upload
    $target_dir = "uploads/";
    $original_file_name = basename($_FILES["profile_picture"]["name"]);
-   
    // NEW CODE: Initialize $new_file_name with $original_file_name
     $new_file_name = $original_file_name; 
-   
-   
     $target_file = $target_dir . $original_file_name;
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
     $uploadOk = 1;
    
-   // Check if file already exists and rename if necessary
  // Check if file already exists and rename if necessary
  if (file_exists($target_file)) {
    // Generate a unique file name by appending a timestamp
@@ -100,8 +96,6 @@ if (isset($_POST['multisave'])) {
 }
 ?>
 
-
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -159,6 +153,7 @@ if (isset($_POST['multisave'])) {
             <div class="valid-feedback">Looks good!</div>
             <div class="invalid-feedback">Please confirm your password.</div>
           </div>
+          
         </div>
       </div>
       <button type="button" id="nextButton" class="btn btn-primary mt-3" onclick="nextStep()">Next</button>
@@ -269,6 +264,7 @@ if (isset($_POST['multisave'])) {
 <script src="./bootstrap-5.3.3-dist/js/bootstrap.js"></script>
 <!-- Script for Address Selector -->
 <script src="ph-address-selector.js"></script>
+<!-- AJAX for live checking of existing usernames -->
 <script>
 $(document).ready(function(){
     $('#username').on('input', function(){
