@@ -296,7 +296,7 @@ $(document).ready(function(){
 });
 
 </script>
-
+<!-- AJAX for live checking of existing emails -->
 <script>
 $(document).ready(function(){
     $('#email').on('input', function(){

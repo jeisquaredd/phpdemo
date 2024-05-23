@@ -72,7 +72,7 @@ class database{
             return $con->query("SELECT users.user_id, users.user_firstname, users.user_lastname, users.user_birthday, users.user_sex, users.user_name, users.user_profile_picture, CONCAT(user_address.city,', ', user_address.province) AS address from users INNER JOIN user_address ON users.user_id = user_address.user_id")->fetchAll();
         }
     
-    function delete($id)
+    function delete($id) 
         {
         try {
         $con = $this->opencon();
@@ -151,4 +151,28 @@ function checkEmailExists($email) {
     return $query->fetch();
 }
 
+function validateCurrentPassword($userId, $currentPassword) {
+    // Open database connection
+    $con = $this->opencon();
+
+    // Prepare the SQL query
+    $query = $con->prepare("SELECT user_pass FROM users WHERE user_id = ?");
+    $query->execute([$userId]);
+
+    // Fetch the user data as an associative array
+    $user = $query->fetch(PDO::FETCH_ASSOC);
+
+    // If a user is found, verify the password
+    if ($user && password_verify($currentPassword, $user['user_pass'])) {
+        return true;
+    }
+
+    // If no user is found or password is incorrect, return false
+    return false;
+}
+function updatePassword($userId, $hashedPassword) {
+    $con = $this->opencon();
+    $query = $con->prepare("UPDATE users SET user_pass = ? WHERE user_id = ?");
+    return $query->execute([$hashedPassword, $userId]);
+}
 }

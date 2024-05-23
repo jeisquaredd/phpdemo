@@ -31,7 +31,7 @@ $profilePicture = $_SESSION['profile_picture'] ?? 'path/to/default/profile_pictu
     <ul class="navbar-nav ml-auto">
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <img src="<?php echo htmlspecialchars($profilePicture); ?>" width="30" height="30" class="rounded-circle" alt="Profile Picture"> <?php echo $_SESSION['username']; ?>
+          <img src="<?php echo $_SESSION['profilepicture']; ?>" width="30" height="30" class="rounded-circle mr-1"  alt="Profile Picture"> <?php echo $_SESSION['username']; ?>
         </a>
 
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
