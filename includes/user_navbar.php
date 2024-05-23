@@ -27,12 +27,13 @@ $profilePicture = $_SESSION['profile_picture'] ?? 'path/to/default/profile_pictu
       </li>
     </ul>
 
+    
     <ul class="navbar-nav ml-auto">
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <img src="<?php echo htmlspecialchars($profilePicture); ?>" width="30" height="30" class="rounded-circle" alt="Profile Picture"> <?php echo $_SESSION['username']; ?>
         </a>
-        
+
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#changeProfilePictureModal"><i class="fas fa-user-circle"></i> Change Profile Picture</a>
             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#updateAccountInfoModal"><i class="fas fa-user-edit"></i> Update Account Information</a>
