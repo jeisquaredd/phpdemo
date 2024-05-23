@@ -16,7 +16,7 @@ try {
     }
 
     // Define the number of records per page
-    $recordsPerPage = 10;
+    $recordsPerPage = 2;
 
     // Get the current page number from the request, default to 1 if not set
     $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;

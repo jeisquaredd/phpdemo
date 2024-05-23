@@ -144,4 +144,11 @@ function getusercount()
     SUM(CASE WHEN user_sex = 'Female' THEN 1 ELSE 0 END) AS female_count FROM users;")->fetch();
 }
 
+function checkEmailExists($email) {
+    $con = $this->opencon();
+    $query = $this->$con->prepare("SELECT user_email FROM users WHERE user_email = ?");
+    $query->execute([$email]);
+    return $query->fetch();
+}
+
 }
