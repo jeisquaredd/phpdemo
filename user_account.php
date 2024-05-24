@@ -2,6 +2,12 @@
 require_once('classes/database.php');
 $con = new Database();
 session_start();
+
+if (!isset($_SESSION['username']) || $_SESSION['account_type'] != 1) {
+  header('location:login.php');
+  exit();
+}
+
 $id = $_SESSION['user_id'];
 $data = $con->viewdata($id);
 
@@ -95,7 +101,7 @@ if (isset($_POST['updatepassword'])) {
           <h3>Account Information</h3>
         </div>
         <div class="info-body">
-          <p><strong>First Name:</strong> Jei</p>
+          <p><strong>First Name:</strong> <?php echo $data['user_firstname'];?></p>
           <p><strong>Last Name:</strong> Pastrana</p>
           <p><strong>Birthday:</strong> July 27, 1999</p>
         </div>
