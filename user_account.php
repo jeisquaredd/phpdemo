@@ -553,8 +553,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     </script><!-- Change Profile Picture Logic Ends here -->
 
-<!-- For Address Selector Validation -->
-<script>
+<!-- For Address Selector Validation --><script>
 document.addEventListener('DOMContentLoaded', function() {
   // Fetch region, province, city, and barangay options dynamically if needed
   // Example for adding event listeners for dynamic fetching
@@ -576,7 +575,7 @@ document.addEventListener('DOMContentLoaded', function() {
     form.classList.add('was-validated');
   }, false);
 });
-</script>
+</script><!-- For Address Selector Validation -->
 
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
