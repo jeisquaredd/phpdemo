@@ -122,7 +122,7 @@ function updateUser($user_id, $firstname, $lastname, $birthday,$sex, $username, 
     }
 }
 
-function updateUserAddress($user_id, $street, $barangay, $city, $province) {
+function updateUserAddress($user_id, $street, $barangay, $city, $province){
     try {
         $con = $this->opencon();
         $con->beginTransaction();
@@ -170,9 +170,19 @@ function validateCurrentPassword($userId, $currentPassword) {
     // If no user is found or password is incorrect, return false
     return false;
 }
-function updatePassword($userId, $hashedPassword) {
+function updatePassword($userId, $hashedPassword){
+try {
     $con = $this->opencon();
+    $con->beginTransaction();
     $query = $con->prepare("UPDATE users SET user_pass = ? WHERE user_id = ?");
-    return $query->execute([$hashedPassword, $userId]);
+    $query->execute([$hashedPassword, $userId]);
+    // Update successful
+    $con->commit();
+    return true;
+} catch (PDOException $e) {
+    // Handle the exception (e.g., log error, return false, etc.)
+     $con->rollBack();
+    return false; // Update failed
+}
 }
 }
