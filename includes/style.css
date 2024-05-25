@@ -112,5 +112,32 @@ body {
 body{
 font-family: 'Roboto', sans-serif;
 }
+/* Custom styling for print starts here */
+
+/* This CSS ensures that only the table is visible when printing, hiding all other elements on the page. The no-print class can be added to elements you don't want to show in the printout. For example, if you want to hide the search input and pagination during printing, add the no-print class to those elements. */
+
+@media print {
+  body * {
+      visibility: hidden;
+  }
+  #userTable, #userTable * {
+      visibility: visible;
+  }
+  #userTable {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      border: 1px solid #000;
+  }
+  .no-print {
+      display: none;
+  }
+  .table-bordered th, .table-bordered td {
+      border: 1px solid #000 !important;
+  }
+}
+
+/* Custom styling for print ends here */
 
 

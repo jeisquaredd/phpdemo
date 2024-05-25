@@ -98,12 +98,19 @@ try {
 <?php include('includes/navbar.php'); ?>
 <div class="container user-info rounded shadow p-3 my-5">
     <h2 class="text-center mb-2">User Table</h2>
-    <!-- Search input -->
-    <div class="mb-3">
-        <input type="text" id="search" class="form-control" placeholder="Search users...">
+    <!-- Search input and Print button -->
+    <div class="container mb-3">
+        <div class="row align-items-center">
+            <div class="col-md-9 col-sm-8 mb-2 mb-sm-0">
+                <input type="text" id="search" class="form-control" placeholder="Search users...">
+            </div>
+            <div class="col-md-3 col-sm-4 text-right">
+                <button onclick="printTable()" class="btn btn-info w-100"><i class="fas fa-print"></i> Print</button>
+            </div>
+        </div>
     </div>
     <div class="table-responsive text-center">
-        <table class="table table-bordered">
+        <table class="table table-bordered" id="userTable">
             <thead>
                 <tr>
                     <th>User_ID</th>
@@ -151,6 +158,16 @@ try {
             });
         });
     });
+
+    function printTable() {
+        var printContents = document.getElementById('userTable').outerHTML;
+        var originalContents = document.body.innerHTML;
+        
+        document.body.innerHTML = '<html><head><title>Print</title></head><body>' + printContents + '</body></html>';
+        window.print();
+        document.body.innerHTML = originalContents;
+        location.reload(); // Reload to restore the original page content
+    }
 </script>
 </body>
 </html>
