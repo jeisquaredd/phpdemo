@@ -97,7 +97,7 @@ class database{
 function viewdata($id){
     try {
         $con = $this->opencon();
-        $query = $con->prepare("SELECT users.user_id, users.user_name, users.user_firstname, users.user_lastname, users.user_birthday, users.user_sex, users.user_pass, user_address.street, user_address.barangay, user_address.city, user_address.province FROM users INNER JOIN user_address ON users.user_id = user_address.user_id WHERE users.user_id = ? ");
+        $query = $con->prepare("SELECT users.user_id, users.user_name, users.user_firstname, users.user_lastname, users.user_birthday, users.user_sex, users.user_pass, users.user_profile_picture, user_address.street, user_address.barangay, user_address.city, user_address.province FROM users INNER JOIN user_address ON users.user_id = user_address.user_id WHERE users.user_id = ? ");
         $query->execute([$id]);
         return $query->fetch();
     } catch (PDOException $e) {
@@ -185,4 +185,21 @@ try {
     return false; // Update failed
 }
 }
+
+ function updateUserProfilePicture($userID, $profilePicturePath) {
+try {
+    $con = $this->opencon();
+    $con->beginTransaction();
+    $query = $con->prepare("UPDATE users SET user_profile_picture = ? WHERE user_id = ?");
+    $query->execute([$profilePicturePath, $userID]);
+    // Update successful
+    $con->commit();
+    return true;
+} catch (PDOException $e) {
+    // Handle the exception (e.g., log error, return false, etc.)
+     $con->rollBack();
+    return false; // Update failed
+}
+ }
+
 }
