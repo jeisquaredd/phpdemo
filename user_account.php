@@ -49,6 +49,10 @@ if (isset($_POST['updatepassword'])) {
       header('Location: user_account.php?status=wrongpassword');
       exit();
   }
+
+  // Fetching currently enrolled courses:
+
+  
 }
 
 
