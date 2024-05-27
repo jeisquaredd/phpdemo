@@ -61,8 +61,18 @@ class database{
     
     function insertAddress($user_id, $street, $barangay, $city, $province)
     {
+        try
+    {
         $con = $this->opencon();
-        return $con->prepare("INSERT INTO user_address (user_id, street, barangay, city, province) VALUES (?,?,?,?,?)")->execute([$user_id, $street, $barangay,  $city, $province]);
+        $con->beginTransaction();
+        $con->prepare("INSERT INTO user_address (user_id, street, barangay, city, province) VALUES (?,?,?,?,?)")->execute([$user_id, $street, $barangay,  $city, $province]);
+        $con->commit();
+        return true;
+    }
+        catch (PDOException $e) {
+            $con->rollBack();
+            return false;
+        }  
           
     }
 

@@ -25,7 +25,7 @@ if (isset($_POST['updatepassword'])) {
           header('Location: user_account.php?status=samepassword');
           exit();
       }
-
+ 
       if ($newPassword === $confirmPassword) {
           $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
 
