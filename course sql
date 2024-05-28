@@ -21,3 +21,16 @@ CREATE TABLE enrollments (
 
  <link rel="stylesheet" href="sweetalert/src/sweetalert.css">
    <link rel="stylesheet" href="sweetalert/src/sweetalert.js">
+
+
+   Download SweetAlert Files:
+
+Go to the SweetAlert GitHub repository.
+Click on the "Code" button and select "Download ZIP".
+Extract the ZIP file to your project directory.
+Include SweetAlert Files in Your Project:
+
+Copy the sweetalert.min.js and sweetalert.css files from the extracted folder to a suitable location in your project directory, for example, js/ and css/ directories respectively.
+Reference SweetAlert Files in Your HTML:
+
+Include the SweetAlert JavaScript and CSS files in your HTML file. Make sure the paths to the files are correct.
