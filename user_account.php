@@ -98,7 +98,7 @@ if (isset($_POST['updateaddress'])) {
   <!-- For Pop Up Notification -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
-  <link rel="stylesheet" href="sweetalert/src/sweetalert.js">
+
 
 
   <style>
