@@ -15,21 +15,9 @@ if (isset($_POST['updatepassword'])) {
   $userId = $_SESSION['user_id'];
   $currentPassword = $_POST['current_password'];
   $newPassword = $_POST['new_password'];
-  $confirmPassword = $_POST['confirm_password'];
-
-  $con = new database();
-
-  if ($con->validateCurrentPassword($userId, $currentPassword)) {
-      if ($currentPassword === $newPassword) {
-          // New password is the same as the current password
-          header('Location: user_account.php?status=samepassword');
-          exit();
-      }
- 
-      if ($newPassword === $confirmPassword) {
-          $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
-
-          // Update the password in the database using the new method
+  $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+  
+  // Update the password in the database using the new method
           if ($con->updatePassword($userId, $hashedPassword)) {
               // Password updated successfully
               header('Location: user_account.php?status=success');
@@ -39,24 +27,8 @@ if (isset($_POST['updatepassword'])) {
               header('Location: user_account.php?status=error');
               exit();
           }
-      } else {
-          // Passwords do not match
-          header('Location: user_account.php?status=nomatch');
-          exit();
-      }
-  } else {
-      // Current password is incorrect
-      header('Location: user_account.php?status=wrongpassword');
-      exit();
-  }
-
-  // Fetching currently enrolled courses:
-
-  
-}
-
-
-
+      
+  } 
 if (isset($_POST['updateaddress'])) {
   $user_id = $id;
   $street = $_POST['user_street'];
